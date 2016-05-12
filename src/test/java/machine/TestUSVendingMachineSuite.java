@@ -8,6 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({TestUSVendingMachineAcceptingCoins.class,
 	TestUSVendingMachineSelectingProducts.class,
 	})
-public class TestVendingMachineSuite {
+public class TestUSVendingMachineSuite {
 	
 }

@@ -59,7 +59,7 @@ public class TestUSVendingMachineAcceptingCoins {
 	public void testNoCoinsInsertedCoinReturnIsEmpty() {
 		// Given no coins have been inserted
 		List<Coin> coinReturnContents = this.machineUnderTest
-				.clearCoinReturnTray();
+				.clearCoinReturn();
 		// Then no coins should be in the coin return
 		assertThat(coinReturnContents.isEmpty(), is(true));
 	}
@@ -87,7 +87,7 @@ public class TestUSVendingMachineAcceptingCoins {
 		// Given coin is inserted and assuming it was rejected
 		assumeFalse(this.machineUnderTest.insertCoin(invalidCoin));
 		// Then, coin return should contain the rejected coin
-		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturnTray();
+		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturn();
 		assertThat(returnedCoins, hasItem(invalidCoin));
 		// And the rejected coin only
 		assertThat(returnedCoins.size(), is(1));
@@ -143,7 +143,7 @@ public class TestUSVendingMachineAcceptingCoins {
 			assumeFalse(this.machineUnderTest.insertCoin(invalidCoin));
 			expectedCoins.add(invalidCoin);
 		}
-		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturnTray();
+		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturn();
 		// Then the coin return should contain the same rejected coins
 		assertThat(returnedCoins.containsAll(expectedCoins), is(true));
 	}
@@ -194,7 +194,7 @@ public class TestUSVendingMachineAcceptingCoins {
 		assumeThat(this.validPaymentOptions, hasItem(validCoin));
 		// Given coin is inserted and assuming it was accepted
 		assumeTrue(this.machineUnderTest.insertCoin(validCoin));
-		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturnTray();
+		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturn();
 		// Then, coin return should not contain the inserted coin
 		assertThat(returnedCoins, not(hasItem(validCoin)));
 		// And no other coins either
@@ -261,7 +261,7 @@ public class TestUSVendingMachineAcceptingCoins {
 			// Assuming the coin was accepted
 			assumeTrue(this.machineUnderTest.insertCoin(validCoin));
 		}
-		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturnTray();
+		List<Coin> returnedCoins = this.machineUnderTest.clearCoinReturn();
 		// Then the coin return shouldn't contain anything
 		assertThat(returnedCoins.size(), is(0));
 	}

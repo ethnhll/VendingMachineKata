@@ -27,12 +27,8 @@ public enum USCoin implements Coin {
 
 	@Override
 	public BigDecimal value() {
-		// Give back a new BigDecimal because we don't want anyone mucking
-		// around with the original reference
-		BigDecimal retVal = new BigDecimal(this.value.toString());
-		// Make sure it has the same properties as the original
-		retVal.setScale(this.value.scale(), BigDecimal.ROUND_HALF_UP);
-		return retVal;
+		// BigDecimal is immutable... silly me
+		return this.value;
 	}
 
 	@Override

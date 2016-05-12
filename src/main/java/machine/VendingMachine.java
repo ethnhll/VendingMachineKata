@@ -14,6 +14,6 @@ public interface VendingMachine {
 	
 	BigDecimal currentInsertedTotal();
 	
-	List<Coin> clearCoinReturnTray();
+	List<Coin> clearCoinReturn();
 
 }
