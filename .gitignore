@@ -1,0 +1,7 @@
+# eclipse things
+.classpath
+.project
+.settings
+# Java things
+*.class
+doc/*
