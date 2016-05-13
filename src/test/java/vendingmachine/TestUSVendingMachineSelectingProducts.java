@@ -1,13 +1,13 @@
-package test.java.machine;
+package test.java.vendingmachine;
 
 import java.util.Arrays;
 import java.util.List;
 
 import main.java.currency.USCoin;
-import main.java.machine.USVendingMachine;
-import main.java.machine.VendingMachine;
 import main.java.product.Product;
-import main.java.product.UnhealthyProduct;
+import main.java.product.JunkFood;
+import main.java.vendingmachine.USVendingMachine;
+import main.java.vendingmachine.VendingMachine;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -33,7 +33,7 @@ public class TestUSVendingMachineSelectingProducts {
 	List<Product> availableSelections;
 	
 	@DataPoints
-	public static Product[] products = UnhealthyProduct.values();
+	public static Product[] products = JunkFood.values();
 	
 	@Before
 	public void beforeTesting() {
@@ -47,7 +47,7 @@ public class TestUSVendingMachineSelectingProducts {
 	public void testPressButtonNoCoinsInsertedNoProductDispensed(Product selection){
 		assumeThat(this.availableSelections, hasItem(selection));
 		// Given that no coins were inserted
-		boolean wasDispensed = this.machineUnderTest.pressButton(selection);
+		boolean wasDispensed = this.machineUnderTest.selectProduct(selection);
 		// Then no product is dispensed
 		assertThat(wasDispensed, is(false));
 	}
@@ -56,7 +56,7 @@ public class TestUSVendingMachineSelectingProducts {
 	public void testPressButtonNoCoinsInsertedDisplayChanged(Product selection){
 		assumeThat(this.availableSelections, hasItem(selection));
 		// Given that no coins were inserted and assuming that no product is dispensed
-		assumeFalse(this.machineUnderTest.pressButton(selection));
+		assumeFalse(this.machineUnderTest.selectProduct(selection));
 		// Then display should be different
 		assertThat(this.machineUnderTest.currentDisplayMessage(), is(not(equalTo("INSERT COINS"))));
 	}
@@ -65,7 +65,7 @@ public class TestUSVendingMachineSelectingProducts {
 	public void testPressButtonNoCoinsInsertedDisplayMatchesSelectionPrice(Product selection){
 		assumeThat(this.availableSelections, hasItem(selection));
 		// Given that no coins were inserted and assuming that no product is dispensed
-		assumeFalse(this.machineUnderTest.pressButton(selection));
+		assumeFalse(this.machineUnderTest.selectProduct(selection));
 		// Assume that display should be different
 		String message = this.machineUnderTest.currentDisplayMessage();
 		assumeThat(message, is(not(equalTo("INSERT COINS"))));
@@ -78,7 +78,7 @@ public class TestUSVendingMachineSelectingProducts {
 	public void testPressButtonNoCoinsInsertedDisplayChangedAgainAfterChecking(Product selection){
 		assumeThat(this.availableSelections, hasItem(selection));
 		// Given that no coins were inserted and assuming that no product is dispensed
-		assumeFalse(this.machineUnderTest.pressButton(selection));
+		assumeFalse(this.machineUnderTest.selectProduct(selection));
 		// Assume that display should be different
 		assumeThat(this.machineUnderTest.currentDisplayMessage(), is(not(equalTo("INSERT COINS"))));
 		// Then a subsequent check should show the original message
@@ -93,7 +93,7 @@ public class TestUSVendingMachineSelectingProducts {
 		assumeTrue(selection.price().compareTo(USCoin.NICKEL.value()) > 0);
 		// Given that not enough money was inserted
 		this.machineUnderTest.insertCoin(USCoin.NICKEL);
-		boolean wasDispensed = this.machineUnderTest.pressButton(selection);
+		boolean wasDispensed = this.machineUnderTest.selectProduct(selection);
 		// Then no product is dispensed
 		assertThat(wasDispensed, is(false));
 	}
@@ -107,7 +107,7 @@ public class TestUSVendingMachineSelectingProducts {
 		this.machineUnderTest.insertCoin(USCoin.NICKEL);
 		String message = this.machineUnderTest.currentDisplayMessage();
 		// and assuming that no product is dispensed
-		assumeFalse(this.machineUnderTest.pressButton(selection));
+		assumeFalse(this.machineUnderTest.selectProduct(selection));
 		// Then display should be different than it was before
 		assertThat(this.machineUnderTest.currentDisplayMessage(), is(not(equalTo(message))));
 	}
@@ -121,7 +121,7 @@ public class TestUSVendingMachineSelectingProducts {
 		this.machineUnderTest.insertCoin(USCoin.NICKEL);
 		String originalMessage = this.machineUnderTest.currentDisplayMessage();
 		// and assuming that no product is dispensed
-		assumeFalse(this.machineUnderTest.pressButton(selection));
+		assumeFalse(this.machineUnderTest.selectProduct(selection));
 		// Assume that display should be different
 		String message = this.machineUnderTest.currentDisplayMessage();
 		assumeThat(message, is(not(equalTo(originalMessage))));
@@ -139,7 +139,7 @@ public class TestUSVendingMachineSelectingProducts {
 		this.machineUnderTest.insertCoin(USCoin.NICKEL);
 		String originalMessage = this.machineUnderTest.currentDisplayMessage();
 		// and assuming that no product is dispensed
-		assumeFalse(this.machineUnderTest.pressButton(selection));
+		assumeFalse(this.machineUnderTest.selectProduct(selection));
 		// Assume that display should be different
 		assumeThat(this.machineUnderTest.currentDisplayMessage(), is(not(equalTo(originalMessage))));
 		// Then a subsequent check should show the original message
@@ -154,7 +154,7 @@ public class TestUSVendingMachineSelectingProducts {
 		// Given that the inserted total is at least the price of the selection
 		// TODO
 		// Then pressing the button dispenses the product
-		boolean wasDispensed = this.machineUnderTest.pressButton(selection);
+		boolean wasDispensed = this.machineUnderTest.selectProduct(selection);
 		assertThat(wasDispensed, is(true));
 	}
 	
@@ -165,7 +165,7 @@ public class TestUSVendingMachineSelectingProducts {
 		// TODO
 		String messageBefore = this.machineUnderTest.currentDisplayMessage();
 		// and assuming that pressing the button dispenses the product
-		assumeTrue(this.machineUnderTest.pressButton(selection));
+		assumeTrue(this.machineUnderTest.selectProduct(selection));
 		
 		// Then the display should be different than it was before
 		assertThat(this.machineUnderTest.currentDisplayMessage(), is(not(equalTo(messageBefore))));
@@ -178,7 +178,7 @@ public class TestUSVendingMachineSelectingProducts {
 		// TODO
 		String messageBefore = this.machineUnderTest.currentDisplayMessage();
 		// and assuming that pressing the button dispenses the product
-		assumeTrue(this.machineUnderTest.pressButton(selection));
+		assumeTrue(this.machineUnderTest.selectProduct(selection));
 		// and assuming the display should be different than it was before
 		String currentMessage = this.machineUnderTest.currentDisplayMessage();
 		assumeThat(currentMessage, is(not(equalTo(messageBefore))));
@@ -193,7 +193,7 @@ public class TestUSVendingMachineSelectingProducts {
 		// Given that the inserted total is at least the price of the selection
 		// TODO
 		// and assuming that pressing the button dispenses the product
-		assumeTrue(this.machineUnderTest.pressButton(selection));
+		assumeTrue(this.machineUnderTest.selectProduct(selection));
 		// Assume that display should be different
 		assumeThat(this.machineUnderTest.currentDisplayMessage(), is(not(equalTo(originalMessage))));
 		// Then a subsequent check should show the default message

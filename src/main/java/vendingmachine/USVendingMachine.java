@@ -1,4 +1,4 @@
-package main.java.machine;
+package main.java.vendingmachine;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,14 +8,9 @@ import java.util.List;
 import main.java.currency.Coin;
 import main.java.currency.USCoin;
 import main.java.product.Product;
-import main.java.product.UnhealthyProduct;
+import main.java.product.JunkFood;
 
 public class USVendingMachine implements VendingMachine {
-
-	private static final String DISPLAY_OUTPUT_FORMAT = "$%s";
-	private static final String PRICE_FORMAT = "PRICE $%s";
-	private static final String GRATEFUL_MESSAGE = "THANK YOU";
-	public static final String DEFAULT_DISPLAY_MESSAGE = "INSERT COINS";
 
 	// Represents that little sticker that shows accepted currency
 	public static final Coin[] VALID_PAYMENT_OPTIONS = { USCoin.NICKEL,
@@ -23,13 +18,13 @@ public class USVendingMachine implements VendingMachine {
 
 	// Represents the buttons on the machine
 	public static final Product[] AVAILABLE_SELECTIONS = {
-			UnhealthyProduct.COLA, UnhealthyProduct.CHIPS,
-			UnhealthyProduct.CANDY };
+			JunkFood.COLA, JunkFood.CHIPS,
+			JunkFood.CANDY };
 
 	// Vending Machine makers know coin measurements from the US mint so why
 	// shouldn't we refer to the USCoin class? Maybe to avoid tight coupling
 	// between the components...
-	private String displayMessage;
+	private Display display;
 	private List<Coin> insertedCoins;
 	private List<Coin> coinReturn;
 
@@ -56,7 +51,7 @@ public class USVendingMachine implements VendingMachine {
 	
 	
 	public USVendingMachine() {
-		this.displayMessage = DEFAULT_DISPLAY_MESSAGE;
+		this.display = new EnglishDisplay();
 		this.insertedCoins = new ArrayList<Coin>();
 		this.coinReturn = new ArrayList<Coin>();
 	}
@@ -77,6 +72,7 @@ public class USVendingMachine implements VendingMachine {
 		// Now where to put the coin...
 		if (isValidCoin) {
 			this.insertedCoins.add(coin);
+			this.display.setToInsertedTotal(this.totalCoinSum(this.insertedCoins));
 		} else {
 			this.coinReturn.add(coin);
 		}
@@ -85,14 +81,13 @@ public class USVendingMachine implements VendingMachine {
 
 	@Override
 	public String currentDisplayMessage() {
-		
-		if (this.insertedCoins.isEmpty()) {
-			this.displayMessage = DEFAULT_DISPLAY_MESSAGE;
+		String message = this.display.currentMessage();
+		if (!this.insertedCoins.isEmpty()){
+			this.display.setToInsertedTotal(this.totalCoinSum(this.insertedCoins));
 		} else {
-			BigDecimal total = this.totalCoinSum(this.insertedCoins);
-			this.displayMessage = String.format(DISPLAY_OUTPUT_FORMAT, total);
+			this.display.reset();
 		}
-		return this.displayMessage;
+		return message;
 	}
 
 	@Override
@@ -108,14 +103,14 @@ public class USVendingMachine implements VendingMachine {
 	}
 
 	@Override
-	public boolean pressButton(Product selection) {
+	public boolean selectProduct(Product selection) {
 		boolean shouldDispense = false;
 		if (this.totalCoinSum(this.insertedCoins).compareTo(selection.price()) >= 0){
 			shouldDispense = true;
-			this.displayMessage = GRATEFUL_MESSAGE;
+			this.display.setToGratefulMessage();
 			this.insertedCoins.clear();
 		} else {
-			this.displayMessage = String.format(PRICE_FORMAT, selection.price());
+			this.display.setToPrice(selection.price());
 		}
 		return shouldDispense;
 	}

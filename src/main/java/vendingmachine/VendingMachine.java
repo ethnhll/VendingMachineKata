@@ -1,4 +1,4 @@
-package main.java.machine;
+package main.java.vendingmachine;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,7 +9,7 @@ import main.java.product.Product;
 public interface VendingMachine {
 
 	
-	boolean insertCoin(Coin currency);
+	boolean insertCoin(Coin coin);
 	
 	String currentDisplayMessage();
 	
@@ -17,6 +17,6 @@ public interface VendingMachine {
 	
 	List<Coin> clearCoinReturn();
 	
-	boolean pressButton(Product selection);
+	boolean selectProduct(Product product);
 
 }

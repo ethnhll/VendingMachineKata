@@ -1,4 +1,4 @@
-package test.java.machine;
+package test.java.vendingmachine;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.everyItem;
@@ -18,8 +18,8 @@ import java.util.List;
 import main.java.currency.Coin;
 import main.java.currency.ForeignCoin;
 import main.java.currency.USCoin;
-import main.java.machine.USVendingMachine;
-import main.java.machine.VendingMachine;
+import main.java.vendingmachine.USVendingMachine;
+import main.java.vendingmachine.VendingMachine;
 
 import org.junit.Before;
 import org.junit.Test;
