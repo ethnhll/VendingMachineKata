@@ -52,7 +52,7 @@ public class TestUSVendingMachineAcceptingCoins {
 		// Given no coins have been inserted
 		String currentMessage = this.machineUnderTest.currentDisplayMessage();
 		// Then the display should show "INSERT COIN"
-		assertThat(currentMessage, is(equalTo("INSERT COIN")));
+		assertThat(currentMessage, is(equalTo("INSERT COINS")));
 	}
 
 	@Test

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import main.java.currency.Coin;
+import main.java.product.Product;
 
 public interface VendingMachine {
 
@@ -15,5 +16,7 @@ public interface VendingMachine {
 	BigDecimal currentInsertedTotal();
 	
 	List<Coin> clearCoinReturn();
+	
+	boolean pressButton(Product selection);
 
 }

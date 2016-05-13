@@ -3,22 +3,28 @@ package main.java.machine;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 import main.java.currency.Coin;
 import main.java.currency.USCoin;
+import main.java.product.Product;
+import main.java.product.UnhealthyProduct;
 
 public class USVendingMachine implements VendingMachine {
 
-	public static final String DEFAULT_DISPLAY_MESSAGE = "INSERT COIN";
+	private static final String DISPLAY_OUTPUT_FORMAT = "$%s";
+	private static final String PRICE_FORMAT = "PRICE $%s";
+	private static final String GRATEFUL_MESSAGE = "THANK YOU";
+	public static final String DEFAULT_DISPLAY_MESSAGE = "INSERT COINS";
 
+	// Represents that little sticker that shows accepted currency
 	public static final Coin[] VALID_PAYMENT_OPTIONS = { USCoin.NICKEL,
 			USCoin.DIME, USCoin.QUARTER };
-	
-	private static final String DISPLAY_OUTPUT_FORMAT = "$%s";
+
+	// Represents the buttons on the machine
+	public static final Product[] AVAILABLE_SELECTIONS = {
+			UnhealthyProduct.COLA, UnhealthyProduct.CHIPS,
+			UnhealthyProduct.CANDY };
 
 	// Vending Machine makers know coin measurements from the US mint so why
 	// shouldn't we refer to the USCoin class? Maybe to avoid tight coupling
@@ -27,25 +33,20 @@ public class USVendingMachine implements VendingMachine {
 	private List<Coin> insertedCoins;
 	private List<Coin> coinReturn;
 
-	public USVendingMachine() {
-		this.displayMessage = DEFAULT_DISPLAY_MESSAGE;
-		this.insertedCoins = new ArrayList<Coin>();
-		this.coinReturn = new ArrayList<Coin>();
-	}
-
 	private boolean hasValidCoinMeasurements(Coin coin) {
+		// This could be spoofed, but at that point the spoofer deserves a candy bar
 		for (Coin usCoin : USCoin.values()) {
 			if (coin.mass() == usCoin.mass()
 					&& coin.thickness() == usCoin.thickness()
 					&& coin.diameter() == usCoin.diameter()) {
-				// Found a match (could be spoofed, but at that point they deserve it)
+				// Found a match, good enough 
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private BigDecimal totalCoinSum(List<Coin> coins){
+	private BigDecimal totalCoinSum(List<Coin> coins) {
 		BigDecimal total = BigDecimal.ZERO;
 		for (Coin coin : coins) {
 			total = total.add(coin.value());
@@ -53,6 +54,13 @@ public class USVendingMachine implements VendingMachine {
 		return total;
 	}
 	
+	
+	public USVendingMachine() {
+		this.displayMessage = DEFAULT_DISPLAY_MESSAGE;
+		this.insertedCoins = new ArrayList<Coin>();
+		this.coinReturn = new ArrayList<Coin>();
+	}
+
 	@Override
 	public boolean insertCoin(Coin coin) {
 		boolean isValidCoin = true;
@@ -77,11 +85,12 @@ public class USVendingMachine implements VendingMachine {
 
 	@Override
 	public String currentDisplayMessage() {
+		
 		if (this.insertedCoins.isEmpty()) {
 			this.displayMessage = DEFAULT_DISPLAY_MESSAGE;
 		} else {
 			BigDecimal total = this.totalCoinSum(this.insertedCoins);
-			this.displayMessage = String.format(DISPLAY_OUTPUT_FORMAT, total.toString());
+			this.displayMessage = String.format(DISPLAY_OUTPUT_FORMAT, total);
 		}
 		return this.displayMessage;
 	}
@@ -96,6 +105,19 @@ public class USVendingMachine implements VendingMachine {
 		List<Coin> tempCoins = new ArrayList<Coin>(this.coinReturn);
 		this.coinReturn.clear();
 		return tempCoins;
+	}
+
+	@Override
+	public boolean pressButton(Product selection) {
+		boolean shouldDispense = false;
+		if (this.totalCoinSum(this.insertedCoins).compareTo(selection.price()) >= 0){
+			shouldDispense = true;
+			this.displayMessage = GRATEFUL_MESSAGE;
+			this.insertedCoins.clear();
+		} else {
+			this.displayMessage = String.format(PRICE_FORMAT, selection.price());
+		}
+		return shouldDispense;
 	}
 
 }
