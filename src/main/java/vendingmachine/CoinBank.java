@@ -7,8 +7,10 @@ import main.java.currency.Coin;
 
 public interface CoinBank {
 	
-	boolean add(Coin coin);
-	BigDecimal insertedTotal();
+	void insertCoin(Coin coin);
+	BigDecimal insertedCoinTotal();
+	List<Coin> returnInsertedCoins();
+	void addInsertedCoinsToStock();
 	List<Coin> makeChange(BigDecimal value);
 	
 }

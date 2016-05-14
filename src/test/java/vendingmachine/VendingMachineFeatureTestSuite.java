@@ -6,9 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	TestEnglishDisplay.class,
-	TestUSCoinBank.class,
+	TestUSVendingMachineAcceptingCoins.class,
+	TestUSVendingMachineSelectingProducts.class,
 	})
-public class VendingMachineTestSuite {
-	
+public class VendingMachineFeatureTestSuite {
+
 }

@@ -25,7 +25,7 @@ public class USVendingMachine implements VendingMachine {
 	// shouldn't we refer to the USCoin class? Maybe to avoid tight coupling
 	// between the components...
 	private Display display;
-	private List<Coin> insertedCoins;
+	private CoinBank coinBank;
 	private List<Coin> coinReturn;
 
 	private boolean hasValidCoinMeasurements(Coin coin) {
@@ -40,19 +40,10 @@ public class USVendingMachine implements VendingMachine {
 		}
 		return false;
 	}
-
-	private BigDecimal totalCoinSum(List<Coin> coins) {
-		BigDecimal total = BigDecimal.ZERO;
-		for (Coin coin : coins) {
-			total = total.add(coin.value());
-		}
-		return total;
-	}
-	
 	
 	public USVendingMachine() {
 		this.display = new EnglishDisplay();
-		this.insertedCoins = new ArrayList<Coin>();
+		this.coinBank = new USCoinBank();
 		this.coinReturn = new ArrayList<Coin>();
 	}
 
@@ -71,8 +62,9 @@ public class USVendingMachine implements VendingMachine {
 		}
 		// Now where to put the coin...
 		if (isValidCoin) {
-			this.insertedCoins.add(coin);
-			this.display.setToInsertedTotal(this.totalCoinSum(this.insertedCoins));
+			//this.insertedCoins.add(coin);
+			this.coinBank.insertCoin(coin);
+			this.display.setToInsertedTotal(this.coinBank.insertedCoinTotal());
 		} else {
 			this.coinReturn.add(coin);
 		}
@@ -82,8 +74,10 @@ public class USVendingMachine implements VendingMachine {
 	@Override
 	public String displayMessage() {
 		String message = this.display.currentMessage();
-		if (!this.insertedCoins.isEmpty()){
-			this.display.setToInsertedTotal(this.totalCoinSum(this.insertedCoins));
+		BigDecimal insertedTotal = this.coinBank.insertedCoinTotal();
+		if (insertedTotal.compareTo(BigDecimal.ZERO) > 0){
+			// there are coins that have been inserted
+			this.display.setToInsertedTotal(insertedTotal);
 		} else {
 			this.display.reset();
 		}
@@ -100,10 +94,11 @@ public class USVendingMachine implements VendingMachine {
 	@Override
 	public boolean selectProduct(Product selection) {
 		boolean shouldDispense = false;
-		if (this.totalCoinSum(this.insertedCoins).compareTo(selection.price()) >= 0){
+		BigDecimal insertedTotal = this.coinBank.insertedCoinTotal();
+		if (insertedTotal.compareTo(selection.price()) >= 0){
 			shouldDispense = true;
 			this.display.setToGratefulMessage();
-			this.insertedCoins.clear();
+			this.coinBank.addInsertedCoinsToStock();
 		} else {
 			this.display.setToPrice(selection.price());
 		}
