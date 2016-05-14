@@ -1,5 +1,5 @@
 package main.java.vendingmachine;
 
-public class UsCoinBank {
+public class USCoinBank {
 
 }

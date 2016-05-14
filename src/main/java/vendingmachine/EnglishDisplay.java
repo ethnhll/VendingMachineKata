@@ -1,6 +1,8 @@
 package main.java.vendingmachine;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class EnglishDisplay implements Display{
 	
@@ -8,9 +10,7 @@ public class EnglishDisplay implements Display{
 	private static final String GRATEFUL = "THANK YOU";
 	private static final String OUT_OF_STOCK = "OUT OF STOCK";
 	private static final String EXACT_CHANGE = "EXACT CHANGE ONLY";
-	
-	private static final String PRICE_FORMAT = "PRICE $%s";
-	private static final String INSERTED_TOTAL_FORMAT = "$%s";
+	private static final String PRICE_PREFIX = "PRICE ";
 	
 	private String currentMessage;
 	
@@ -37,12 +37,13 @@ public class EnglishDisplay implements Display{
 
 	@Override
 	public void setToPrice(BigDecimal value) {
-		this.currentMessage = String.format(PRICE_FORMAT, value);
+		String dollarValueString = NumberFormat.getCurrencyInstance(Locale.US).format(value);
+		this.currentMessage = String.join(PRICE_PREFIX, dollarValueString);
 	}
 
 	@Override
 	public void setToInsertedTotal(BigDecimal total) {
-		this.currentMessage = String.format(INSERTED_TOTAL_FORMAT, total);
+		this.currentMessage = NumberFormat.getCurrencyInstance(Locale.US).format(total);
 		
 	}
 
