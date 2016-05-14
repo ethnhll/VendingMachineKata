@@ -37,6 +37,10 @@ public class USCoinBank implements CoinBank {
 	@Override
 	public void addInsertedCoinsToStock() {
 		for (Coin coin : this.insertedCoins){
+			// Just in case...
+			if (!(coin instanceof USCoin)){
+				throw new IllegalArgumentException("Unrecognized coin type");
+			}
 			// Adjust the coin stock
 			if(this.coinStock.containsKey(coin)){
 				Integer count = this.coinStock.get(coin) + 1;

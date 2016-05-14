@@ -21,13 +21,13 @@ public class USVendingMachine implements VendingMachine {
 			JunkFood.COLA, JunkFood.CHIPS,
 			JunkFood.CANDY };
 
-	// Vending Machine makers know coin measurements from the US mint so why
-	// shouldn't we refer to the USCoin class? Maybe to avoid tight coupling
-	// between the components...
 	private Display display;
 	private CoinBank coinBank;
 	private List<Coin> coinReturn;
 
+	// Vending Machine makers know coin measurements from the US mint so why
+	// shouldn't we refer to the USCoin class? Maybe to avoid tight coupling
+	// between the components... Could maybe be deferred to the coin bank
 	private boolean hasValidCoinMeasurements(Coin coin) {
 		// This could be spoofed, but at that point the spoofer deserves a candy bar
 		for (Coin usCoin : USCoin.values()) {
