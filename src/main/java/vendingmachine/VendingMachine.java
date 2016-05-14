@@ -11,9 +11,7 @@ public interface VendingMachine {
 	
 	boolean insertCoin(Coin coin);
 	
-	String currentDisplayMessage();
-	
-	BigDecimal currentInsertedTotal();
+	String displayMessage();
 	
 	List<Coin> clearCoinReturn();
 	

@@ -80,7 +80,7 @@ public class USVendingMachine implements VendingMachine {
 	}
 
 	@Override
-	public String currentDisplayMessage() {
+	public String displayMessage() {
 		String message = this.display.currentMessage();
 		if (!this.insertedCoins.isEmpty()){
 			this.display.setToInsertedTotal(this.totalCoinSum(this.insertedCoins));
@@ -88,11 +88,6 @@ public class USVendingMachine implements VendingMachine {
 			this.display.reset();
 		}
 		return message;
-	}
-
-	@Override
-	public BigDecimal currentInsertedTotal() {
-		return this.totalCoinSum(this.insertedCoins);
 	}
 
 	@Override
