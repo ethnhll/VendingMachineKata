@@ -9,11 +9,9 @@ public interface VendingMachine {
 
 	
 	boolean insertCoin(Coin coin);
-	
 	String displayMessage();
-	
+	void pressCoinReturn();
 	List<Coin> clearCoinReturn();
-	
 	boolean selectProduct(Product product);
 
 }

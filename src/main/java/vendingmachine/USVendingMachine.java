@@ -105,4 +105,10 @@ public class USVendingMachine implements VendingMachine {
 		return shouldDispense;
 	}
 
+	@Override
+	public void pressCoinReturn() {
+		List<Coin> returnedCoins = this.coinBank.returnInsertedCoins();
+		this.coinReturn.addAll(returnedCoins);
+	}
+
 }

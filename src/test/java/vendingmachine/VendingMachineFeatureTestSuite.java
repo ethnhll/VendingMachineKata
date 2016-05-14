@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	TestUSVendingMachineAcceptingCoins.class,
 	TestUSVendingMachineSelectingProducts.class,
+	TestUSVendingMachineReturningCoins.class,
 	})
 public class VendingMachineFeatureTestSuite {
 
