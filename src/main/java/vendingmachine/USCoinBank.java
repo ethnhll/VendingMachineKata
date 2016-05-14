@@ -53,7 +53,7 @@ public class USCoinBank implements CoinBank {
 	}
 
 	@Override
-	public BigDecimal insertedCoinTotal() {
+	public BigDecimal insertedTotal() {
 		BigDecimal total = BigDecimal.ZERO;
 		for (Coin coin : this.insertedCoins){
 			total = total.add(coin.value());

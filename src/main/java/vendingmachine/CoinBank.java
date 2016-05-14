@@ -8,7 +8,7 @@ import main.java.currency.Coin;
 public interface CoinBank {
 	
 	void insertCoin(Coin coin);
-	BigDecimal insertedCoinTotal();
+	BigDecimal insertedTotal();
 	List<Coin> returnInsertedCoins();
 	void addInsertedCoinsToStock();
 	List<Coin> makeChange(BigDecimal value);

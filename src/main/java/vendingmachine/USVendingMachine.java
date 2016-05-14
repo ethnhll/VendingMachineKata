@@ -64,7 +64,7 @@ public class USVendingMachine implements VendingMachine {
 		if (isValidCoin) {
 			//this.insertedCoins.add(coin);
 			this.coinBank.insertCoin(coin);
-			this.display.setToInsertedTotal(this.coinBank.insertedCoinTotal());
+			this.display.setToInsertedTotal(this.coinBank.insertedTotal());
 		} else {
 			this.coinReturn.add(coin);
 		}
@@ -74,7 +74,7 @@ public class USVendingMachine implements VendingMachine {
 	@Override
 	public String displayMessage() {
 		String message = this.display.currentMessage();
-		BigDecimal insertedTotal = this.coinBank.insertedCoinTotal();
+		BigDecimal insertedTotal = this.coinBank.insertedTotal();
 		if (insertedTotal.compareTo(BigDecimal.ZERO) > 0){
 			// there are coins that have been inserted
 			this.display.setToInsertedTotal(insertedTotal);
@@ -94,7 +94,7 @@ public class USVendingMachine implements VendingMachine {
 	@Override
 	public boolean selectProduct(Product selection) {
 		boolean shouldDispense = false;
-		BigDecimal insertedTotal = this.coinBank.insertedCoinTotal();
+		BigDecimal insertedTotal = this.coinBank.insertedTotal();
 		if (insertedTotal.compareTo(selection.price()) >= 0){
 			shouldDispense = true;
 			this.display.setToGratefulMessage();
