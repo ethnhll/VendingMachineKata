@@ -109,6 +109,7 @@ public class USVendingMachine implements VendingMachine {
 	public void pressCoinReturn() {
 		List<Coin> returnedCoins = this.coinBank.returnInsertedCoins();
 		this.coinReturn.addAll(returnedCoins);
+		this.display.reset();
 	}
 
 }
