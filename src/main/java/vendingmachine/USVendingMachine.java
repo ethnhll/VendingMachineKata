@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import main.java.currency.Coin;
+import main.java.currency.CoinBank;
 import main.java.currency.USCoin;
+import main.java.currency.USCoinBank;
 import main.java.product.Product;
 import main.java.product.JunkFood;
 

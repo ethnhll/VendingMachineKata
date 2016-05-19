@@ -1,18 +1,21 @@
-package main.java.vendingmachine;
+package main.java.currency;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import main.java.currency.Coin;
-import main.java.currency.USCoin;
 
 public class USCoinBank implements CoinBank {
 	
 	private List<Coin> insertedCoins;
 	private Map<USCoin, Integer> coinStock;
+	
+	private List<Coin> sortCoins(List<Coin> coins){
+	}
 	
 	public USCoinBank(){
 		this.insertedCoins = new ArrayList<Coin>();

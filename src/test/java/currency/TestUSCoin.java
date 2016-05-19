@@ -1,4 +1,4 @@
-package test.java;
+package test.java.currency;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

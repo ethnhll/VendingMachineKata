@@ -1,16 +1,14 @@
-package test.java.vendingmachine;
+package test.java.currency;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import test.java.currency.TestUSCoinBank;
-
 @RunWith(Suite.class)
 @SuiteClasses({
-	TestEnglishDisplay.class,
+	TestUSCoin.class,
 	TestUSCoinBank.class,
 	})
-public class VendingMachineTestSuite {
-	
+public class CurrencyTestSuite {
+
 }

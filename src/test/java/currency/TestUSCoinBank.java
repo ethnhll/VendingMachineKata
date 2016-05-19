@@ -1,4 +1,4 @@
-package test.java.vendingmachine;
+package test.java.currency;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -8,10 +8,10 @@ import static org.hamcrest.CoreMatchers.is;
 import java.math.BigDecimal;
 
 import main.java.currency.Coin;
+import main.java.currency.CoinBank;
 import main.java.currency.ForeignCoin;
 import main.java.currency.USCoin;
-import main.java.vendingmachine.CoinBank;
-import main.java.vendingmachine.USCoinBank;
+import main.java.currency.USCoinBank;
 
 import org.junit.Before;
 import org.junit.Test;

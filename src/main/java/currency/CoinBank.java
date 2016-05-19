@@ -1,9 +1,8 @@
-package main.java.vendingmachine;
+package main.java.currency;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import main.java.currency.Coin;
 
 public interface CoinBank {
 	
