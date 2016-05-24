@@ -64,7 +64,7 @@ public class TestCoinComparator {
 		Coin otherCoin = USCoin.NICKEL;
 		comparatorUnderTest.compare(coin, otherCoin);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void compare_OtherCoinIsADifferentType_ShouldThrowException() {
 		Coin coin = USCoin.NICKEL;

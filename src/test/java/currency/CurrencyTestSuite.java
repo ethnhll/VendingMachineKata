@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	TestUSCoin.class,
+	TestCoinComparator.class,
 	TestUSCoinBank.class,
 	})
 public class CurrencyTestSuite {
