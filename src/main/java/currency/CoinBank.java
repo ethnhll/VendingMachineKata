@@ -10,6 +10,6 @@ public interface CoinBank {
 	BigDecimal insertedTotal();
 	List<Coin> returnInsertedCoins();
 	void addInsertedCoinsToStock();
-	List<Coin> makeChange(BigDecimal value);
+	List<Coin> payout(BigDecimal value);
 	
 }
