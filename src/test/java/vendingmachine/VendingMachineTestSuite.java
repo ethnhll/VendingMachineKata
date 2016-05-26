@@ -9,7 +9,9 @@ import test.java.currency.TestUSCoinBank;
 @RunWith(Suite.class)
 @SuiteClasses({
 	TestEnglishDisplay.class,
-	TestUSCoinBank.class,
+	TestUSVendingMachineAcceptingCoins.class,
+	TestUSVendingMachineSelectingProducts.class,
+	TestUSVendingMachineReturningCoins.class,
 	})
 public class VendingMachineTestSuite {
 	

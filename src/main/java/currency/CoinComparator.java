@@ -9,7 +9,8 @@ public class CoinComparator implements Comparator<Coin> {
 		if (!coin.getClass().equals(otherCoin.getClass())){
 			throw new IllegalArgumentException("Coins are not the same type, cannot compare");
 		}
-		return coin.value().compareTo(otherCoin.value());
+		// We want DESC order
+		return otherCoin.value().compareTo(coin.value());
 	}
 
 }

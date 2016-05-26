@@ -21,6 +21,8 @@ public class TestEnglishDisplay {
 	static final String INSERT_COINS_MESSAGE = "INSERT COINS";
 	static final String GRATEFUL_MESSAGE = "THANK YOU";
 	static final String PRICE_PREFIX = "PRICE ";
+	static final String OUT_OF_STOCK = "OUT OF STOCK";
+	static final String EXACT_CHANGE = "EXACT CHANGE ONLY";
 
 	static final String VALUE_STRING = "55.55";
 
@@ -69,6 +71,24 @@ public class TestEnglishDisplay {
 		// Then the current message of the display should show gratitude
 		assertThat(this.displayUnderTest.currentMessage(),
 				is(equalTo(GRATEFUL_MESSAGE)));
+	}
+	
+	@Test
+	public void currentMessage_ChangedToOutOfStockMessage_MessageIsOutOfStock() {
+		// Given the display was set to the out of stock message
+		this.displayUnderTest.setToOutOfStockMessage();
+		// Then the current message of the display should show out of stock
+		assertThat(this.displayUnderTest.currentMessage(),
+				is(equalTo(OUT_OF_STOCK)));
+	}
+	
+	@Test
+	public void currentMessage_ChangedToExactChangeOnly_MessageIsExactChangeOnly() {
+		// Given the display was set to exact change
+		this.displayUnderTest.setToExactChangeMessage();
+		// Then the current message of the display should show exact change only
+		assertThat(this.displayUnderTest.currentMessage(),
+				is(equalTo(EXACT_CHANGE)));
 	}
 
 	@Test

@@ -44,18 +44,18 @@ public class TestCoinComparator {
 	}
 
 	@Test
-	public void compare_FirstUSCoinIsGreater_ShouldReturnOne() {
+	public void compare_FirstUSCoinIsGreater_ShouldReturnNegativeOne() {
 		Coin coin = USCoin.NICKEL;
 		Coin otherCoin = USCoin.PENNY;
-		assertThat(comparatorUnderTest.compare(coin, otherCoin), is(equalTo(1)));
+		assertThat(comparatorUnderTest.compare(coin, otherCoin), is(equalTo(-1)));
 	}
 
 	@Test
-	public void compare_FirstUSCoinIsLesser_ShouldReturnNegativeOne() {
+	public void compare_FirstUSCoinIsLesser_ShouldReturnOne() {
 		Coin coin = USCoin.PENNY;
 		Coin otherCoin = USCoin.NICKEL;
 		assertThat(comparatorUnderTest.compare(coin, otherCoin),
-				is(equalTo(-1)));
+				is(equalTo(1)));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

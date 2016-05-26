@@ -6,7 +6,6 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeThat;
 
 import java.math.BigDecimal;
@@ -57,21 +56,21 @@ public class TestUSCoinBank {
 	}
 
 	@Test
-	public void payout_NoCoinsInStock_ShouldReturnEmptyList() {
+	public void makeChange_NoCoinsInStock_ShouldReturnEmptyList() {
 		BigDecimal changeValue = BigDecimal.ONE;
-		List<Coin> payout = this.bankUnderTest.payout(changeValue);
+		List<Coin> payout = this.bankUnderTest.makeChange(changeValue);
 		assertThat(payout.isEmpty(), is(true));
 	}
 
 	@Test
-	public void payout_NotEnoughCoinsInStock_ShouldReturnEmptyList() {
+	public void makeChange_NotEnoughCoinsInStock_ShouldReturnEmptyList() {
 		// Given that there is at least a coin in stock
 		this.bankUnderTest.insertCoin(USCoin.PENNY);
 		this.bankUnderTest.addInsertedCoinsToStock();
 		// and the expected payout is larger than that coin
 		BigDecimal changeValue = USCoin.QUARTER.value();
 		// Then the payed out coin list should be empty
-		List<Coin> payout = this.bankUnderTest.payout(changeValue);
+		List<Coin> payout = this.bankUnderTest.makeChange(changeValue);
 		assertThat(payout.isEmpty(), is(true));
 	}
 
@@ -83,15 +82,26 @@ public class TestUSCoinBank {
 		this.bankUnderTest.addInsertedCoinsToStock();
 		// and the expected payout is the value of the inserted coin
 		// Then the payed out coin list should contain the coin
-		List<Coin> payout = this.bankUnderTest.payout(coin.value());
+		List<Coin> payout = this.bankUnderTest.makeChange(coin.value());
 		assertThat(payout, hasItem(coin));
 		// and that coin only
 		assertThat(payout.size(), is(equalTo(1)));
 	}
-
+	
 	@Test
-	public void testAddInsertedCoinsToStock() {
-		fail("Not yet implemented");
+	public void makeChange_CoinsInStockMatchPayoutCoins_ShouldReturnSameCoins() {
+		BigDecimal expectedPayout = BigDecimal.ZERO;
+		List<Coin> expectedCoins = Arrays.asList(usCoins);
+		for (Coin coin : expectedCoins){
+			// Given that there are several coins inserted
+			this.bankUnderTest.insertCoin(coin);	
+			expectedPayout = expectedPayout.add(coin.value());
+		}
+		this.bankUnderTest.addInsertedCoinsToStock();
+		// and the expected payout is the value of the inserted coins
+		// Then the payed out coin list should contain those same coins
+		List<Coin> payout = this.bankUnderTest.makeChange(expectedPayout);
+		assertThat(payout.containsAll(expectedCoins), is(true));
 	}
 
 	@Test

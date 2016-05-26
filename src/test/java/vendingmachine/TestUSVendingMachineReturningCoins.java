@@ -3,7 +3,6 @@ package test.java.vendingmachine;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
@@ -14,6 +13,9 @@ import java.util.List;
 import main.java.currency.Coin;
 import main.java.currency.ForeignCoin;
 import main.java.currency.USCoin;
+import main.java.currency.USCoinBank;
+import main.java.product.JunkStore;
+import main.java.vendingmachine.EnglishDisplay;
 import main.java.vendingmachine.USVendingMachine;
 import main.java.vendingmachine.VendingMachine;
 
@@ -37,7 +39,7 @@ public class TestUSVendingMachineReturningCoins {
 	
 	@Before
 	public void beforeTesting() {
-		this.machineUnderTest = new USVendingMachine();
+		this.machineUnderTest = new USVendingMachine(new EnglishDisplay(), new USCoinBank(), new JunkStore());
 	}
 
 	@Test

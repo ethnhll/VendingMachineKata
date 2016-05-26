@@ -18,8 +18,12 @@ import java.util.List;
 import java.util.Locale;
 
 import main.java.currency.Coin;
+import main.java.currency.CoinBank;
 import main.java.currency.ForeignCoin;
 import main.java.currency.USCoin;
+import main.java.currency.USCoinBank;
+import main.java.product.ProductStore;
+import main.java.vendingmachine.EnglishDisplay;
 import main.java.vendingmachine.USVendingMachine;
 import main.java.vendingmachine.VendingMachine;
 
@@ -29,6 +33,8 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
+import test.java.testutils.VendingMachineUtils;
 
 @RunWith(Theories.class)
 public class TestUSVendingMachineAcceptingCoins {
@@ -46,7 +52,11 @@ public class TestUSVendingMachineAcceptingCoins {
 
 	@Before
 	public void beforeTesting() {
-		this.machineUnderTest = new USVendingMachine();
+		CoinBank usCoinBank = VendingMachineUtils.stockUSCoinBank();
+		ProductStore junkStore = VendingMachineUtils.stockJunkStore();
+
+		this.machineUnderTest = new USVendingMachine(new EnglishDisplay(),
+				(USCoinBank) usCoinBank, junkStore);
 		this.validPaymentOptions = Arrays.asList(USVendingMachine.VALID_PAYMENT_OPTIONS);
 	}
 

@@ -1,31 +1,37 @@
 package test.java.vendingmachine;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
-import main.java.currency.USCoin;
-import main.java.product.Product;
-import main.java.product.JunkFood;
-import main.java.vendingmachine.USVendingMachine;
-import main.java.vendingmachine.VendingMachine;
-
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assume.assumeThat;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Set;
+
+import main.java.currency.CoinBank;
+import main.java.currency.USCoin;
+import main.java.currency.USCoinBank;
+import main.java.product.JunkFood;
+import main.java.product.JunkStore;
+import main.java.product.Product;
+import main.java.product.ProductStore;
+import main.java.vendingmachine.EnglishDisplay;
+import main.java.vendingmachine.USVendingMachine;
+import main.java.vendingmachine.VendingMachine;
 
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
+import test.java.testutils.VendingMachineUtils;
 
 @RunWith(Theories.class)
 public class TestUSVendingMachineSelectingProducts {
@@ -37,15 +43,19 @@ public class TestUSVendingMachineSelectingProducts {
 	// TODO: These test names are getting ridiculous, let's refactor them after this suite is done...
 	
 	VendingMachine machineUnderTest;
-	List<Product> availableSelections;
+	Set<Product> availableSelections;
 	
 	@DataPoints
 	public static Product[] products = {JunkFood.CANDY};//JunkFood.values();
 	
 	@Before
 	public void beforeTesting() {
-		this.machineUnderTest = new USVendingMachine();
-		this.availableSelections = Arrays.asList(USVendingMachine.AVAILABLE_SELECTIONS);
+		CoinBank usCoinBank = VendingMachineUtils.stockUSCoinBank();
+		ProductStore junkStore = VendingMachineUtils.stockJunkStore();
+
+		this.machineUnderTest = new USVendingMachine(new EnglishDisplay(),
+				(USCoinBank) usCoinBank, junkStore);
+		this.availableSelections = this.machineUnderTest.availableSelections();
 	}
 	// Assuming that the customer can't press buttons that don't exist
 	

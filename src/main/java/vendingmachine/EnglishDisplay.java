@@ -29,11 +29,11 @@ public class EnglishDisplay implements Display{
 		
 	}
 
-//	@Override
-//	public void setToOutOfStockMessage() {
-//		this.currentMessage = OUT_OF_STOCK;
-//		
-//	}
+	@Override
+	public void setToOutOfStockMessage() {
+		this.currentMessage = OUT_OF_STOCK;
+		
+	}
 
 	@Override
 	public void setToPrice(BigDecimal value) {
@@ -47,11 +47,11 @@ public class EnglishDisplay implements Display{
 		
 	}
 
-//	@Override
-//	public void setToExactChangeMessage() {
-//		this.currentMessage = EXACT_CHANGE;
-//		
-//	}
+	@Override
+	public void setToExactChangeMessage() {
+		this.currentMessage = EXACT_CHANGE;
+		
+	}
 
 	@Override
 	public String currentMessage() {

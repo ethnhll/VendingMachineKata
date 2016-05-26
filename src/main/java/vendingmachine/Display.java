@@ -6,10 +6,10 @@ public interface Display {
 
 	void reset();
 	void setToGratefulMessage();
-	//void setToOutOfStockMessage();
+	void setToOutOfStockMessage();
 	void setToPrice(BigDecimal value);
 	void setToInsertedTotal(BigDecimal total);
-	//void setToExactChangeMessage();
+	void setToExactChangeMessage();
 	String currentMessage();
 	
 }

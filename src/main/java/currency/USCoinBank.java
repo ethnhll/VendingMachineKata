@@ -19,6 +19,51 @@ public class USCoinBank implements CoinBank {
 		this.coinStock = new EnumMap<>(USCoin.class);
 	}
 	
+	private static BigDecimal sumOfCoins(Map<USCoin, Integer> stock){
+		BigDecimal sum = BigDecimal.ZERO;
+		for (Coin coinType : stock.keySet()){
+			Integer numCoins = stock.get(coinType);
+			BigDecimal totalForCoinType = coinType.value().multiply(new BigDecimal(numCoins));
+			sum = sum.add(totalForCoinType);
+		}
+		return sum;
+	}
+	
+	private static List<Coin> coinPayout(Map<USCoin, Integer> stock, BigDecimal value){
+		assert(value.compareTo(BigDecimal.ZERO) >= 0);
+		List<Coin> availableCoinTypes = new ArrayList<Coin>(stock.keySet());
+		// We sort by value (desc) so that we can payout in the largest possible coins
+		Collections.sort(availableCoinTypes, new CoinComparator());
+		List<Coin> payout = new ArrayList<Coin>();
+		for (Coin coinType : availableCoinTypes){
+			int numCoins = stock.get(coinType);
+			// try until we run out of this type of coin
+			while (numCoins > 0){
+				if (value.compareTo(BigDecimal.ZERO) == 0){
+					// We're done
+					break;
+				} else if (value.compareTo(BigDecimal.ZERO) < 0){
+					// We've overshot our payout, go back 
+					value = value.add(coinType.value());
+					payout.remove(payout.size()-1);
+					numCoins += 1;
+					// break out, we shouldn't try with this coin type
+					break;
+				} else {
+					// Try to add the coin to the payout
+					value = value.subtract(coinType.value());
+					payout.add(coinType);
+					numCoins -= 1;
+				}
+			}
+		}
+		if (value.compareTo(BigDecimal.ZERO) != 0){
+			// Reset the payout list because it was only partial...
+			payout.clear();
+		}
+		return payout;
+	}
+	
 	@Override
 	public void insertCoin(Coin coin) {
 		if (coin instanceof USCoin){
@@ -29,35 +74,31 @@ public class USCoinBank implements CoinBank {
 	}
 	
 	@Override
-	public List<Coin> payout(BigDecimal value) {
-		List<Coin> availableCoinTypes = new ArrayList<Coin>(this.coinStock.keySet());
-		// We sort by value so that we can payout in the largest possible coins
-		Collections.sort(availableCoinTypes, new CoinComparator());
-		List<Coin> payout = new ArrayList<Coin>();
-		for(Coin coinType : availableCoinTypes){
-			Integer numAvailableCoins = this.coinStock.get(coinType);
-			for (; numAvailableCoins > 0; numAvailableCoins -= 1){
-				if (value.compareTo(BigDecimal.ZERO) == 0){
-					// We're done
-					break;
-				} else if (value.compareTo(BigDecimal.ZERO) == -1) {
-					// Went over, remove last item 
-					payout.remove(payout.size()-1);
-					// and add the coin value back to the target
-					value = value.add(coinType.value());
-					break;
-				} else {
-					// Try adding another item
-					payout.add(coinType);
-					value = value.subtract(coinType.value());
-				}
-			}
-			// Update the coin stock
-			this.coinStock.put((USCoin) coinType, numAvailableCoins);
+	public boolean canMakeChange(BigDecimal value) {
+		boolean canMakeChange = true;
+		// Obviously insufficient funds
+		if (sumOfCoins(this.coinStock).compareTo(value) < 0){
+			canMakeChange = false;
+		} 
+		if (coinPayout(this.coinStock, value).isEmpty()){
+			canMakeChange = false;
 		}
-		return payout;
+		return canMakeChange;
 	}
-
+	
+	
+	
+	@Override
+	public List<Coin> makeChange(BigDecimal value) {
+		List<Coin> changePayout = coinPayout(this.coinStock, value);
+		// Update the contents of the coin stock to remove the coins in the list
+		for (Coin coin : changePayout){
+			Integer numCoins = this.coinStock.get(coin);
+			this.coinStock.put((USCoin) coin, numCoins-1);
+		}
+		return changePayout;
+	}
+		
 	@Override
 	public void addInsertedCoinsToStock() {
 		for (Coin coin : this.insertedCoins){
@@ -90,6 +131,10 @@ public class USCoinBank implements CoinBank {
 		List<Coin> temp = new ArrayList<Coin>(this.insertedCoins);
 		this.insertedCoins.clear();
 		return temp;
-	}	
+	}
+
+
+
+	
 	
 }
