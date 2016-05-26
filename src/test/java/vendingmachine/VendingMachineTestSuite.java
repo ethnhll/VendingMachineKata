@@ -11,6 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	TestUSVendingMachineSelectingProducts.class,
 	TestUSVendingMachineReturningCoins.class,
 	TestUSVendingMachineShowingSoldOut.class,
+	TestUSVendingMachineShowingExactChangeOnly.class,
 	})
 public class VendingMachineTestSuite {
 	

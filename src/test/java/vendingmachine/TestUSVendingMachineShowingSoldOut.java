@@ -29,7 +29,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import test.java.testutils.VendingMachineUtils;
+import test.java.testutils.VendingMachineTestUtils;
 
 @RunWith(Theories.class)
 public class TestUSVendingMachineShowingSoldOut {
@@ -47,9 +47,9 @@ public class TestUSVendingMachineShowingSoldOut {
 
 	@Before
 	public void beforeTesting() {
-		CoinBank usCoinBank = VendingMachineUtils.stockUSCoinBank();
-		// We actually want to test for the most part that the VendingMachine
-		// doesn't have anything in stock so we don't stock up the store..
+		CoinBank usCoinBank = VendingMachineTestUtils.stockUSCoinBank();
+		// We actually want to test that the VendingMachine
+		// doesn't have anything in stock, so don't stock up the store..
 		this.machineUnderTest = new USVendingMachine(new EnglishDisplay(),
 				(USCoinBank) usCoinBank, new JunkStore());
 	}
@@ -98,9 +98,11 @@ public class TestUSVendingMachineShowingSoldOut {
 		// assume the message shown should be out of stock
 		assumeThat(this.machineUnderTest.displayMessage(),
 				is(equalTo(OUT_OF_STOCK)));
-		// Then the next message should the formatted dollar value of the inserted coin
+		// Then the next message should the formatted dollar value of the
+		// inserted coin
 		String coinValue = NumberFormat.getCurrencyInstance(Locale.US).format(
 				USCoin.NICKEL.value());
-		assumeThat(this.machineUnderTest.displayMessage(), is(equalTo(coinValue)));
+		assumeThat(this.machineUnderTest.displayMessage(),
+				is(equalTo(coinValue)));
 	}
 }

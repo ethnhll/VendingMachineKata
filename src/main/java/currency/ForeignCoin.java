@@ -3,30 +3,44 @@ package main.java.currency;
 import java.math.BigDecimal;
 
 public enum ForeignCoin implements Coin {
-	FOOBAR;
+	
+	// Just make it huge
+	FOOBAR("10", 10F, 10F, 10F);
+
+	private BigDecimal value;
+	private float mass;
+	private float thickness;
+	private float diameter;
+
+	private ForeignCoin(String value, float mass, float thickness, float diameter) {
+		BigDecimal decimal = new BigDecimal(value);
+		// Wouldn't want our taxes to be UNDER paid, now would we?
+		decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+		
+		this.value = decimal;
+		this.mass = mass;
+		this.thickness = thickness;
+		this.diameter = diameter;
+	}
+	
+	@Override
+	public BigDecimal value() {
+		return this.value;
+	}
 
 	@Override
 	public float mass() {
-		// TODO We don't care yet about this
-		return 0;
+		return this.mass;
 	}
 
 	@Override
 	public float thickness() {
-		// TODO We don't care yet about this
-		return 0;
+		return this.thickness;
 	}
 
 	@Override
 	public float diameter() {
-		// TODO We don't care yet about this
-		return 0;
-	}
-
-	@Override
-	public BigDecimal value() {
-		// TODO We don't care yet about this
-		return null;
+		return this.diameter;
 	}
 
 }

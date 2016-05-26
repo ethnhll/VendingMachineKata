@@ -34,7 +34,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import test.java.testutils.VendingMachineUtils;
+import test.java.testutils.VendingMachineTestUtils;
 
 @RunWith(Theories.class)
 public class TestUSVendingMachineAcceptingCoins {
@@ -52,8 +52,8 @@ public class TestUSVendingMachineAcceptingCoins {
 
 	@Before
 	public void beforeTesting() {
-		CoinBank usCoinBank = VendingMachineUtils.stockUSCoinBank();
-		ProductStore junkStore = VendingMachineUtils.stockJunkStore();
+		CoinBank usCoinBank = VendingMachineTestUtils.stockUSCoinBank();
+		ProductStore junkStore = VendingMachineTestUtils.stockJunkStore();
 
 		this.machineUnderTest = new USVendingMachine(new EnglishDisplay(),
 				(USCoinBank) usCoinBank, junkStore);

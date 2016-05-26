@@ -27,7 +27,6 @@ public enum USCoin implements Coin {
 
 	@Override
 	public BigDecimal value() {
-		// BigDecimal is immutable... silly me
 		return this.value;
 	}
 

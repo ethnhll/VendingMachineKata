@@ -9,7 +9,7 @@ import main.java.product.JunkStore;
 import main.java.product.Product;
 import main.java.product.ProductStore;
 
-public class VendingMachineUtils {
+public class VendingMachineTestUtils {
 	
 	public static final Integer NUM_THINGS = 100;
 	

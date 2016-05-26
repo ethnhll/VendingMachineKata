@@ -18,7 +18,6 @@ import main.java.currency.CoinBank;
 import main.java.currency.USCoin;
 import main.java.currency.USCoinBank;
 import main.java.product.JunkFood;
-import main.java.product.JunkStore;
 import main.java.product.Product;
 import main.java.product.ProductStore;
 import main.java.vendingmachine.EnglishDisplay;
@@ -31,7 +30,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import test.java.testutils.VendingMachineUtils;
+import test.java.testutils.VendingMachineTestUtils;
 
 @RunWith(Theories.class)
 public class TestUSVendingMachineSelectingProducts {
@@ -39,8 +38,6 @@ public class TestUSVendingMachineSelectingProducts {
 	static final String INSERT_COINS_MESSAGE = "INSERT COINS";
 	static final String PRICE_PREFIX = "PRICE ";
 	static final String GRATEFUL_MESSAGE = "THANK YOU";
-	
-	// TODO: These test names are getting ridiculous, let's refactor them after this suite is done...
 	
 	VendingMachine machineUnderTest;
 	Set<Product> availableSelections;
@@ -50,8 +47,8 @@ public class TestUSVendingMachineSelectingProducts {
 	
 	@Before
 	public void beforeTesting() {
-		CoinBank usCoinBank = VendingMachineUtils.stockUSCoinBank();
-		ProductStore junkStore = VendingMachineUtils.stockJunkStore();
+		CoinBank usCoinBank = VendingMachineTestUtils.stockUSCoinBank();
+		ProductStore junkStore = VendingMachineTestUtils.stockJunkStore();
 
 		this.machineUnderTest = new USVendingMachine(new EnglishDisplay(),
 				(USCoinBank) usCoinBank, junkStore);
